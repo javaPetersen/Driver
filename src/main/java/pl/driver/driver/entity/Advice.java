@@ -2,7 +2,6 @@ package pl.driver.driver.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -25,6 +24,7 @@ public class Advice {
     @NotEmpty
     @Size(min = 3, max = 1000)
     private String content;
+
 
 
 }

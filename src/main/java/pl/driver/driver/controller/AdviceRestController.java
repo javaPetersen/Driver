@@ -6,14 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import pl.driver.driver.entity.Advice;
 import pl.driver.driver.service.AdviceService;
 
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -47,7 +47,6 @@ public class AdviceRestController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAdvice(@PathVariable Long id, @Valid @RequestBody Advice advice) {
-        ResponseEntity<Advice> of = ResponseEntity.of(adviceService.get(id));
         Optional<Advice> optionalAdvice = adviceService.get(id);
         if (optionalAdvice.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -64,8 +63,6 @@ public class AdviceRestController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 
 
 
