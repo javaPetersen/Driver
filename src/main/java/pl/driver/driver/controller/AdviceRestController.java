@@ -1,15 +1,22 @@
 package pl.driver.driver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.driver.driver.entity.Advice;
 import pl.driver.driver.service.AdviceService;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,14 +52,25 @@ public class AdviceRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
+    @PostMapping(value = "/upload", consumes = { MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<Void> addAdviceWithPhoto(@RequestPart(required = false) MultipartFile file, @Valid @RequestPart Advice advice) {
+        if (file != null) {
+            advice.setFilePath(adviceService.storeFile(file, advice));
+        }
+        adviceService.save(advice);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAdvice(@PathVariable Long id, @Valid @RequestBody Advice advice) {
-        Optional<Advice> optionalAdvice = adviceService.get(id);
-        if (optionalAdvice.isEmpty()) {
+        Advice oldAdvice = adviceService.get(id).orElse(null);
+        if (oldAdvice == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        advice.setId(optionalAdvice.get().getId());
-        adviceService.save(advice);
+        oldAdvice.setTitle(advice.getTitle());
+        oldAdvice.setContent(advice.getContent());
+        adviceService.save(oldAdvice);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
