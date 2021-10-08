@@ -23,4 +23,7 @@ public class Question {
 
     @ManyToMany
     private List<Answer> answers;
+
+    @ManyToMany(mappedBy = "questions")
+    private List<Training> trainings;
 }

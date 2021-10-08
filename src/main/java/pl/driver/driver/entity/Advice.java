@@ -40,6 +40,9 @@ public class Advice {
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();
 
+    @OneToOne
+    private Training training;
+
 
     @PrePersist
     public void setCreatedOn(){
