@@ -7,9 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -26,7 +24,6 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    @NotEmpty
     private List<Advice> advices = new ArrayList<>();
 
 }
