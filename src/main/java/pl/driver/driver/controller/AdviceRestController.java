@@ -57,7 +57,7 @@ public class AdviceRestController {
             advice.setFilePath(adviceService.storeFile(file, advice));
         }
         adviceService.save(advice);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
