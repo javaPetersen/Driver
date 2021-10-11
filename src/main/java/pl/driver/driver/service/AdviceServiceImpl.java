@@ -31,7 +31,6 @@ public class AdviceServiceImpl implements AdviceService{
 
     @Override
     public void save(Advice advice) {
-        tagRepository.saveAll(advice.getTags());
         adviceRepository.save(advice);
     }
 
