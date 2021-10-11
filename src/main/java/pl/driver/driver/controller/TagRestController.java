@@ -9,6 +9,7 @@ import pl.driver.driver.entity.Tag;
 import pl.driver.driver.service.AdviceService;
 import pl.driver.driver.service.TagService;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
@@ -40,17 +41,18 @@ public class TagRestController {
     }
 
     @PostMapping("/advice/{id}/tag")
+    @Transactional
     public ResponseEntity<Void> addTagToAdvice(@PathVariable Long id, @Valid @RequestBody Tag... tag) {
         Optional<Advice> optionalAdvice = adviceService.get(id);
         if (optionalAdvice.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        Set<@Valid Tag> tags = Arrays.stream(tag).collect(Collectors.toSet());
-        optionalAdvice.get().getTags().forEach(tags::remove);
+        Arrays.stream(tag).forEach(tagService::save);
+        Arrays.stream(tag).forEach(t -> optionalAdvice.get().getTags().add(t));
 
-        tags.stream()
-                .peek(t -> t.getAdvices().add(optionalAdvice.get()))
-                .forEach(tagService::save);
+        adviceService.save(optionalAdvice.get());
+
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
