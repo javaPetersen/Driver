@@ -31,7 +31,6 @@ public class AdviceServiceImpl implements AdviceService{
 
     @Override
     public void save(Advice advice) {
-        tagRepository.saveAll(advice.getTags());
         adviceRepository.save(advice);
     }
 
@@ -69,6 +68,11 @@ public class AdviceServiceImpl implements AdviceService{
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void saveAll(List<Advice> advices) {
+        adviceRepository.saveAll(advices);
     }
 
     @Value("${upload.path}")

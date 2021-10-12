@@ -1,28 +1,20 @@
 package pl.driver.driver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.driver.driver.entity.Advice;
 import pl.driver.driver.service.AdviceService;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
 
 
 @RestController
-@RequestMapping("/advice")
+@RequestMapping("api/advice")
 public class AdviceRestController {
 
 
@@ -57,7 +49,7 @@ public class AdviceRestController {
             advice.setFilePath(adviceService.storeFile(file, advice));
         }
         adviceService.save(advice);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
