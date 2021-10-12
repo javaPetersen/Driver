@@ -13,4 +13,6 @@ public interface AdviceService {
     List<Advice> findAll();
     Boolean remove(Long id);
     String storeFile(MultipartFile file, Advice advice);
+
+    void saveAll(List<Advice> advices);
 }

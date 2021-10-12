@@ -2,11 +2,12 @@ package pl.driver.driver.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter
@@ -23,7 +24,7 @@ public class Tag {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Advice> advices = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Advice> advices = new LinkedList<>();
 
 }

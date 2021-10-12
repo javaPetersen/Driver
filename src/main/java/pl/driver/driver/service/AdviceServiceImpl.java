@@ -70,6 +70,11 @@ public class AdviceServiceImpl implements AdviceService{
         return null;
     }
 
+    @Override
+    public void saveAll(List<Advice> advices) {
+        adviceRepository.saveAll(advices);
+    }
+
     @Value("${upload.path}")
     private String uploadPath;
 

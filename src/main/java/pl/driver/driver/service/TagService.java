@@ -9,5 +9,6 @@ public interface TagService {
     void save(Tag tag);
     Optional<Tag> getTagById(Long id);
     List<Tag> findAll();
-    Boolean removeById(Long id);
+    void removeById(Long id);
+    void update(Tag newTag, Long oldTagId);
 }
