@@ -2,10 +2,8 @@ package pl.driver.driver.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import pl.driver.driver.entity.Advice;
 import pl.driver.driver.service.AdviceService;
 
@@ -26,15 +24,14 @@ public class AdviceRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Advice>> allAdvices() {
+    public ResponseEntity<List<Advice>> getAllAdvices() {
         return ResponseEntity.status(HttpStatus.OK).body(adviceService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Advice> getAdviceById(@PathVariable Long id) {
-        return ResponseEntity.of(adviceService.get(id));
+        return ResponseEntity.of(adviceService.getAdvice(id));
     }
-
 
     @PostMapping
     public ResponseEntity<Void> addAdvice(@Valid @RequestBody Advice advice) {
@@ -42,33 +39,15 @@ public class AdviceRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
-    @PostMapping(value = "/upload", consumes = { MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<Void> addAdviceWithPhoto(@RequestPart(required = false) MultipartFile file, @Valid @RequestPart Advice advice) {
-        if (file != null) {
-            advice.setFilePath(adviceService.storeFile(file, advice));
-        }
-        adviceService.save(advice);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAdvice(@PathVariable Long id, @Valid @RequestBody Advice advice) {
-        Advice oldAdvice = adviceService.get(id).orElse(null);
-        if (oldAdvice == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        oldAdvice.setTitle(advice.getTitle());
-        oldAdvice.setContent(advice.getContent());
-        adviceService.save(oldAdvice);
+        adviceService.update(advice, id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAdvice(@PathVariable Long id) {
-        if (!adviceService.remove(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        adviceService.remove(id);
         return ResponseEntity.ok().build();
     }
 

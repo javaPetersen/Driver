@@ -2,7 +2,6 @@ package pl.driver.driver.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -29,18 +28,15 @@ public class Advice {
     @Size(min = 3, max = 1000)
     private String content;
 
-    private LocalDateTime createdOn;
-
-    private LocalDateTime updatedOn;
-
-    private String filePath;
-
     @ManyToMany
     private List<Tag> tags = new LinkedList<>();
 
     @OneToOne
     private Training training;
 
+    private LocalDateTime createdOn;
+
+    private LocalDateTime updatedOn;
 
     @PrePersist
     public void setCreatedOn(){
