@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,9 +21,8 @@ public class Training {
     private Advice advice;
 
     @ManyToMany
-    private List<Question> questions;
+    private Set<Question> questions;
 
-    @NotNull
     private Boolean isPassed = false;
 
     @NotNull

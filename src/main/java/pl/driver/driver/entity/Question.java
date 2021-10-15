@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,8 +23,6 @@ public class Question {
     private String content;
 
     @ManyToMany
-    private List<Answer> answers;
+    private Set<Answer> answers;
 
-    @ManyToMany(mappedBy = "questions")
-    private List<Training> trainings;
 }
