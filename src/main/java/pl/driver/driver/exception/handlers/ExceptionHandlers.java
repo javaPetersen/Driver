@@ -1,5 +1,6 @@
 package pl.driver.driver.exception.handlers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,4 +28,13 @@ public class ExceptionHandlers {
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
+
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String maxFileSize;
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<String> handleMaxUploadSizeException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File size is bigger than " + maxFileSize);
+    }
+
 }
